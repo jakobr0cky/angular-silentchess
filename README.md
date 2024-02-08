@@ -12,20 +12,11 @@ Welcome to Chess Master, an Angular website where you can challenge the Stockfis
 - **Play with a Friend:** Invite a friend to play chess with you over the url link.
 - **Blind Chess Mode:** Enable blind mode for an extra challenge. In this mode, both players can't see the pieces, making the game more challenging and exciting.
 
-## How to Play:
-1. **Single Player Mode:**
-   - Make your first move to play against the computer.
-   - Use the input field to enter your moves in blind chess mode.
-
-2. **Multiplayer Mode:**
-   - Select "Create Game" to start a game with another player.
-   - Enable blind mode for an additional challenge.
-   - Communicate moves with your friend via the input field.
-
 ## Technologies Used:
 - Angular: Frontend framework for building the website.
 - Stockfish: Powerful chess engine for single-player mode.
 - Text-to-Speech: Utilized for conveying opponent moves in blind chess mode.
+- Socket.io: For Real-time connection in multiplayer mode
 
 ## How to Run:
 1. Clone this repository to your local machine.

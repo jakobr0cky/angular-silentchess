@@ -8,7 +8,7 @@ export class WebsocketService {
     private webSocket: Socket;
     constructor() {
         this.webSocket = new Socket({
-            url: "https://legendary-buttercream-3e2e67.netlify.app",
+            url: "https://bespoke-zuccutto-02e61e.netlify.app",
             options: {},
         });
 

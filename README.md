@@ -2,6 +2,8 @@
 
 Welcome to Silentchess, an Angular website where you can challenge the Stockfish chess engine, enhance your skills with blind chess mode, and even play against a friend in multiplayer mode!
 
+Backend: https://github.com/jakobr0cky/express-server-chess
+
 ## Features:
 
 ### Single Player Mode:

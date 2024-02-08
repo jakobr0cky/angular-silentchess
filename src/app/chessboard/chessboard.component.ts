@@ -6,35 +6,36 @@ import { v4 as uuidv4 } from 'uuid';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { StockfishService } from '../stockfish.service';
 import { ChessboardService } from '../chessboard.service';
-  
+
 @Component({
   selector: 'app-chessboard',
   standalone: true,
   imports: [CommonModule, DragDropModule, MatSnackBarModule],
   templateUrl: './chessboard.component.html',
   styleUrl: './chessboard.component.scss',
-  providers:[ChessboardService]
+  providers: [ChessboardService]
 })
 
 export class ChessboardComponent {
 
-  constructor(public router:  Router, public snackBar: MatSnackBar,) { }
+  constructor(public router: Router, public snackBar: MatSnackBar,) { }
 
   private stockishService!: StockfishService;
-  protected chessboardService!:ChessboardService;
+  protected chessboardService!: ChessboardService;
   protected boardGenerationArray: number[] = [0, 1, 2, 3, 4, 5, 6, 7];
   protected moves: string[] = [];
   protected isBlindMode: boolean = false;
   protected isEngineGame: boolean = true;
+  private utterance = new SpeechSynthesisUtterance();
 
   get board() {
     return this.chessboardService.getBoard();
   }
 
-  public get getMoves(){
+  public get getMoves() {
     return this.moves;
   }
-  
+
   ngOnInit() {
     this.chessboardService = new ChessboardService(this.snackBar);
     // cant do this in constructor because handEngineMessage doesnt exist when constructor is called
@@ -50,18 +51,18 @@ export class ChessboardComponent {
     this.router.navigate(['./', uuid]);
   }
 
-  public doEngineMove(){
+  public doEngineMove() {
     this.stockishService.searchForMove(this.chessboardService.getFen());
   }
 
-  public doPlayerMove(move: string | { from: string, to: string, promotion?: string }){ // for multiplayer component to override
+  public doPlayerMove(move: string | { from: string, to: string, promotion?: string }) { // for multiplayer component to override
     return this.chessboardService.makeMoveOnBoard(move);
   }
 
   public getSquareInfo(x: number, y: number) {
     return this.chessboardService.getBoard()[x][y];
   }
-  
+
   public isBlackSquare(row: number, col: number) {
     return (row + col) % 2 === 1;
   }
@@ -71,11 +72,11 @@ export class ChessboardComponent {
     return `assets\\pieces\\${squareInfo?.color}${squareInfo?.type.toUpperCase()}.svg`;
   }
 
-  public speakMove(move:string){
-    const utterance = new SpeechSynthesisUtterance(move);
+  public speakMove(move: string) {
+    this.utterance.text = move;
     const voices = speechSynthesis.getVoices();
-    utterance.voice = voices[0];
-    speechSynthesis.speak(utterance);
+    this.utterance.voice = voices[0];
+    speechSynthesis.speak(this.utterance);
   }
 
   public updateMoves() {
@@ -100,7 +101,7 @@ export class ChessboardComponent {
         this.chessboardService.makeMoveOnBoard({ from: squareFrom, to: squareTo });
       }
       this.updateMoves();
-      
+
       var lastMoveSAN = this.chessboardService.getHistory();
       this.speakMove(lastMoveSAN[lastMoveSAN.length - 1]);
     }
@@ -109,7 +110,7 @@ export class ChessboardComponent {
   onMoveEnter($event: Event) {
     const inputElement = $event.target as HTMLInputElement;
 
-    if(this.chessboardService.getHumanColor() != this.chessboardService.getCurrentPlayer()){
+    if (this.chessboardService.getHumanColor() != this.chessboardService.getCurrentPlayer()) {
       let snackBarRef = this.snackBar.open('Not your turn yet!', 'close', {
         duration: 2000,
         horizontalPosition: 'center',
@@ -118,14 +119,14 @@ export class ChessboardComponent {
       inputElement.value = '';
       return;
     }
-    
-   
-    var wasMoveLegal =  this.doPlayerMove(inputElement.value);
+
+
+    var wasMoveLegal = this.doPlayerMove(inputElement.value);
 
     if (wasMoveLegal) {
       this.updateMoves();
 
-      if(this.isEngineGame)this.doEngineMove();
+      if (this.isEngineGame) this.doEngineMove();
     }
     else {
       let snackBarRef = this.snackBar.open('Wrong move input', 'close', {
@@ -141,19 +142,19 @@ export class ChessboardComponent {
     const alpha = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
 
     var sourceCoordinates = event.item.data.split(',');
-    var notation1 = alpha[sourceCoordinates[1]] +(8- sourceCoordinates[0]);
+    var notation1 = alpha[sourceCoordinates[1]] + (8 - sourceCoordinates[0]);
     var notation2 = `${alpha[targetColumn]}${8 - targetRow}`;
-    
+
     var promotion
-    if(this.getSquareInfo(sourceCoordinates[0],sourceCoordinates[1])?.type == 'p' && this.boardGenerationArray[targetRow] == 0){
+    if (this.getSquareInfo(sourceCoordinates[0], sourceCoordinates[1])?.type == 'p' && this.boardGenerationArray[targetRow] == 0) {
       promotion = 'q';
     }
 
-    var wasMoveLegal = this.doPlayerMove({from:notation1,to:notation2,promotion:promotion!});
+    var wasMoveLegal = this.doPlayerMove({ from: notation1, to: notation2, promotion: promotion! });
 
     if (wasMoveLegal) {
       this.updateMoves();
-      if(this.isEngineGame)this.doEngineMove();
+      if (this.isEngineGame) this.doEngineMove();
     }
   }
 }

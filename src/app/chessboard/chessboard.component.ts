@@ -1,7 +1,7 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, HashLocationStrategy } from '@angular/common';
 import { Component } from '@angular/core';
 import { CdkDragDrop, DragDropModule } from '@angular/cdk/drag-drop';
-import { Router } from '@angular/router';
+import { Router, provideRouter } from '@angular/router';
 import { v4 as uuidv4 } from 'uuid';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { StockfishService } from '../stockfish.service';
@@ -18,7 +18,7 @@ import { ChessboardService } from '../chessboard.service';
 
 export class ChessboardComponent {
 
-  constructor(public router: Router, public snackBar: MatSnackBar,) { }
+  constructor(public router:  Router, public snackBar: MatSnackBar,) { }
 
   private stockishService!: StockfishService;
   protected chessboardService!:ChessboardService;
@@ -47,7 +47,7 @@ export class ChessboardComponent {
 
   createGame() {
     const uuid = uuidv4();
-    this.router.navigate(['/game', uuid]);
+    this.router.navigate(['./', uuid]);
   }
 
   public doEngineMove(){

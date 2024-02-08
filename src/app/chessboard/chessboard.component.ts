@@ -100,6 +100,9 @@ export class ChessboardComponent {
         this.chessboardService.makeMoveOnBoard({ from: squareFrom, to: squareTo });
       }
       this.updateMoves();
+      
+      var lastMoveSAN = this.chessboardService.getHistory();
+      this.speakMove(lastMoveSAN[lastMoveSAN.length - 1]);
     }
   }
 
@@ -120,10 +123,6 @@ export class ChessboardComponent {
     var wasMoveLegal =  this.doPlayerMove(inputElement.value);
 
     if (wasMoveLegal) {
-      if(this.isBlindMode){ // chess move text to speech
-        var moves = this.chessboardService.getHistory();
-        this.speakMove(moves[moves.length - 1]);
-      }
       this.updateMoves();
 
       if(this.isEngineGame)this.doEngineMove();

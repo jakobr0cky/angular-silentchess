@@ -57,7 +57,10 @@ private subscribeToReceiveMove(): void {
     const observableReceiveMove = this.socketService.getObserver('receiveMove');
     observableReceiveMove.subscribe((move: any) => {
         if (typeof move === 'string') {
+            console.log('move rec');
+            console.log('move'+move)
             this.chessboardService.makeMoveOnBoard(move);
+            this.speakMove(move);
         } else {
             this.chessboardService.makeMoveOnBoard({ from: move.from, to: move.to });
         }

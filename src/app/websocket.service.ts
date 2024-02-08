@@ -8,7 +8,7 @@ export class WebsocketService {
     private webSocket: Socket;
     constructor() {
         this.webSocket = new Socket({
-            url: "https://bespoke-zuccutto-02e61e.netlify.app",
+            url: "https://express-server-chess-dev-ezrm.4.us-1.fl0.io",
             options: {},
         });
 

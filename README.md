@@ -1,6 +1,6 @@
-# Chess Master: Play Chess and Improve Your Skills
+# Silentchess: Play Blindfolded and Improve Your Skills
 
-Welcome to Chess Master, an Angular website where you can challenge the Stockfish chess engine, enhance your skills with blind chess mode, and even play against a friend in multiplayer mode!
+Welcome to Silentchess, an Angular website where you can challenge the Stockfish chess engine, enhance your skills with blind chess mode, and even play against a friend in multiplayer mode!
 
 ## Features:
 
